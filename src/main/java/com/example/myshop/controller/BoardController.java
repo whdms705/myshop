@@ -1,9 +1,14 @@
 package com.example.myshop.controller;
 
+import com.example.myshop.security.AuthUser;
+import com.example.myshop.security.LoginUser;
 import com.example.myshop.utils.ServerInfo;
 import org.apache.catalina.Server;
 import org.springframework.stereotype.Controller;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/boards")
@@ -12,19 +17,25 @@ public class BoardController {
     // GET /boards?page=2 - 2page의 결과를 달라.
     @GetMapping
     public String list(
-            ServerInfo serverInfo
-            ,@RequestParam(name="page",required = false,defaultValue = "1")int page
-            ,@RequestParam(name="searchKind",required = false)String searchKind
-            ,@RequestParam(name="searchStr",required = false)String searchStr){
-
-        if(serverInfo!=null){
-            System.out.println(serverInfo.getIp());
-            System.out.println(serverInfo.getPort());
+            @AuthUser LoginUser loginUser,
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(name = "searchKind", required = false) String searchKind,
+            @RequestParam(name = "searchStr", required = false) String searchStr
+    ){
+//
+//        LoginUser loginUser = (LoginUser)SecurityContextHolder
+//                .getContext().getAuthentication().getPrincipal();
+        if(loginUser != null){
+            System.out.println("----------------------");
+            System.out.println(loginUser.getId());
+            System.out.println(loginUser.getName());
+            System.out.println(loginUser.getEmail());
+            System.out.println("----------------------");
         }
-        System.out.println("page : "+page);
-        System.out.println("searchKind : "+searchKind);
-        System.out.println("searchStr : "+searchStr);
-        return "list"; //view name을 리턴한다.
+        System.out.println("page : " + page);
+        System.out.println("searchKind : " + searchKind);
+        System.out.println("searchStr : " + searchStr);
+        return "list"; // view name 을 리턴한다.
     }
 
     @GetMapping(path="{boardId}")

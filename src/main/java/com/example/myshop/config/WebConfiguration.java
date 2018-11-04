@@ -1,5 +1,6 @@
 package com.example.myshop.config;
 
+import com.example.myshop.security.LoginUserArgumentResolver;
 import com.example.myshop.utils.MyArgumentResolver;
 import com.example.myshop.utils.MyInterceptor;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new MyArgumentResolver());
+        resolvers.add(new LoginUserArgumentResolver());
     }
 }
 
